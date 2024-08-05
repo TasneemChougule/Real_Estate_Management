@@ -1,0 +1,31 @@
+package com.app.controller;
+
+import com.app.model.Property;
+import com.app.model.User;
+import com.app.service.PropertyService;
+import com.app.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/properties")
+public class PropertyController {
+    @Autowired
+    private PropertyService propertyService;
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/add")
+    public ResponseEntity<Property> addProperty(@RequestParam String title, @RequestParam String description,
+                                                @RequestParam String location, @RequestParam double price,
+                                                @RequestParam String status, @RequestParam String ownerUsername) {
+        User owner = userService.findByUsername(ownerUsername);
+        if (owner == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Property property = propertyService.addProperty(title, description, location, price, status, owner);
+        return ResponseEntity.ok(property);
+    }
+}

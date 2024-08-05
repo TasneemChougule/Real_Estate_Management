@@ -1,0 +1,25 @@
+package com.app.service;
+
+import com.app.model.Property;
+import com.app.model.User;
+import com.app.repository.PropertyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PropertyService {
+    @Autowired
+    private PropertyRepository propertyRepository;
+
+    // Method to add a new property
+    public Property addProperty(String title, String description, String location, double price, String status, User owner) {
+        Property property = new Property();
+        property.setTitle(title);
+        property.setDescription(description);
+        property.setLocation(location);
+        property.setPrice(price);
+        property.setStatus(status);
+        property.setOwner(owner);
+        return propertyRepository.save(property);
+    }
+}
